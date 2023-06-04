@@ -1,0 +1,15 @@
+body{
+    background-color: pink;
+}
+.container{
+    justify-content: center;
+    text-align: center;
+}
+.row>img{
+    width: 640px;
+    height: 480px;
+}
+
+#chooseFile {
+    display: None
+}
