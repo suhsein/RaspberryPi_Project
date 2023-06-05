@@ -9,7 +9,25 @@ body{
     width: 640px;
     height: 480px;
 }
-
+h1{
+    padding:15px;
+}
+label{
+    text-decoration-line: underline;
+    text-decoration-style: double;
+    cursor:pointer;
+    margin:25px;
+    background-color:khaki;
+}
 #chooseFile {
-    display: None
+    display: None;
+}
+
+#submit{
+    width:50px;
+    height:25px;
+    border:0px;
+    background-color :khaki;
+    border-radius: 8px;
+    cursor:pointer
 }

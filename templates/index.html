@@ -5,23 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-			  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
     <title>Raspberry pi</title>
  </head>
 <body>
     <div class="container">
         <h1>Raspberry pi project</h1>
-        <form action="post" enctype="multipart/form-data">
-            <label for="chooseFile">😎choose File</label>
+        <form action="{{ url_for('file_upload')}}" enctype="multipart/form-data" method="POST">
+            <label for="chooseFile">choose File</label>
             <input id="chooseFile" name="chooseFile" type="file" accept=".jpeg,.jpg,.png,.JPEG,.JPG,.PNG" >
-            <div class="row">
-                <div class="col-lg-8  offset-lg-2">
-                    <h3 class="mt-5">Live Streaming</h3> 	<!-- mt-5는 공백을 주기 위한 것 -->
-                    <img src="{{ url_for('video_feed') }}">
-                </div>
-            </div>
+            <input id="submit" type="submit" value="submit">
         </form>
+        <div class="row">
+            <div class="col-lg-8  offset-lg-2">
+                <h3 class="mt-5">🎥Live Streaming</h3> 	<!-- mt-5는 공백을 주기 위한 것 -->
+                    {% if filename %} 
+                        <p> {{ filename }}</p>
+                        <img src="{{ url_for('video_feed2',filename=filename)}}">
+                    {% else %}
+                        <img src="{{ url_for('video_feed')}}">
+                    {% endif %} 
+            </div>
+        </div>
     </div>
 </body>
 </html>

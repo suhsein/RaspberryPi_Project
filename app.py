@@ -1,4 +1,5 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, redirect, url_for, request, flash, Response
+from fileinput import filename
 import RPi.GPIO as GPIO
 import time
 import spidev
@@ -8,6 +9,8 @@ import sys
 import threading
 import pigpio
 import mediapipe as mp
+from werkzeug.utils import secure_filename
+import os
 
 # camera
 connstr = 'libcamerasrc ! video/x-raw, width=640, height=480, framerate=30/1 ! videoconvert ! videoscale ! clockoverlay time-format="%D %H:%M:%S" ! appsink'
@@ -69,13 +72,13 @@ servo_thread.start()
 
 # 플라스크 웹
 app = Flask(__name__)
+app.secret_key = 'some_secret'
+app.config['IMG_FOLDER'] = os.path.abspath(os.path.join('project', 'static', 'images'))
 
-BG_COLOR = (192, 192, 192)
 
-def gen_frames():
+def gen_frames(filename=''):
 	with mp_face_detection.FaceDetection(model_selection=0, min_detection_confidence=0.5) as face_detection, \
 		mp_selfie_segmentation.SelfieSegmentation(model_selection=1) as selfie_segmentation :
-		bg_image = None
 		while True:
 			succes, img = cap.read()
 			if succes == False:
@@ -92,30 +95,41 @@ def gen_frames():
 				for face in face_result.detections:
 					nose = mp_face_detection.get_key_point(face, mp_face_detection.FaceKeyPoint.NOSE_TIP)
 					servo_facedetect(nose)
-					# print(nose)
-				
+					
 			img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 			condition = np.stack((result.segmentation_mask,) * 3, axis=-1) > 0.02
-			bg_image =  cv2.imread('/home/suhsein/Desktop/beach-sea-coast-sand-ocean-horizon-1189298-pxhere.com.jpg')
-			bg_image = cv2.resize(bg_image, (640,480))
-			if bg_image is None:
-			  bg_image = np.zeros(img.shape, dtype=np.uint8); bg_image[:] = BG_COLOR
-			
-			img = np.where(condition, img, bg_image)
+
+			if filename != '':
+				path = os.path.join(app.config['IMG_FOLDER'], filename)
+				bg_img = cv2.imread(path)	
+				bg_img = cv2.resize(bg_img, (640,480))
+				img = np.where(condition, img, bg_img)
 			
 			ref, buffer = cv2.imencode('.jpg', img)   
 			img = buffer.tobytes()
 			yield (b'--frame\r\n'
 					b'Content-Type: image/jpeg\r\n\r\n' + img + b'\r\n')  
-
-
+			
 @app.route('/')
 def home():
-	return	render_template('index.html')
+	print(app.config['IMG_FOLDER'])
+	return render_template('index.html')
+
+@app.route('/uploader', methods=['GET', 'POST'])
+def file_upload():
+	if request.method == 'POST':
+		file = request.files['chooseFile']
+		path = os.path.join(app.config['IMG_FOLDER'], secure_filename(file.filename))
+		file.save(path)
+	return render_template('index.html', filename=file.filename)
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame') 
+	return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame') 
 
+@app.route('/video_feed/<filename>')
+def video_feed2(filename):
+	return Response(gen_frames(filename), mimetype='multipart/x-mixed-replace; boundary=frame') 
+	
 if __name__ == "__main__":
 	app.run(host="172.30.1.37", port="8080")
