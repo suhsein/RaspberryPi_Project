@@ -12,6 +12,8 @@ import mediapipe as mp
 from werkzeug.utils import secure_filename
 import os
 
+#test
+
 # camera
 connstr = 'libcamerasrc ! video/x-raw, width=640, height=480, framerate=30/1 ! videoconvert ! videoscale ! clockoverlay time-format="%D %H:%M:%S" ! appsink'
 cap = cv2.VideoCapture(connstr, cv2.CAP_GSTREAMER)
