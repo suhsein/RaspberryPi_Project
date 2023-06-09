@@ -11,11 +11,10 @@ import pigpio
 import mediapipe as mp
 from werkzeug.utils import secure_filename
 import os
-
-#test
+from datetime import datetime
 
 # camera
-connstr = 'libcamerasrc ! video/x-raw, width=640, height=480, framerate=30/1 ! videoconvert ! videoscale ! clockoverlay time-format="%D %H:%M:%S" ! appsink'
+connstr = 'libcamerasrc ! video/x-raw, width=640, height=480, framerate=30/1 ! videoconvert ! videoscale ! appsink'
 cap = cv2.VideoCapture(connstr, cv2.CAP_GSTREAMER)
 
 # face detection, segmentation
@@ -35,6 +34,12 @@ pw = (pw_MIN+pw_MAX)/2; pi.set_servo_pulsewidth(SERVO_PIN, pw)
 sw_channel = 0; vry_channel = 1; vrx_channel = 2
 spi = spidev.SpiDev(); spi.open(0,0); spi.max_speed_hz = 1000000 
 
+# 플라스크 웹
+app = Flask(__name__)
+app.secret_key = 'some_secret'
+app.config['IMG_FOLDER'] = os.path.abspath(os.path.join('project', 'static', 'images'))
+
+
 # SPI 채널 값 읽어오기
 def readadc(adcnum):
 	if adcnum > 7 or adcnum < 0:
@@ -45,18 +50,24 @@ def readadc(adcnum):
 
 # 서보모터 수동제어
 def servo_control():
-	global pw, img
+	global pw
 	while True:
-		vrx_pos = readadc(vrx_channel); sw_val = readadc(sw_channel)
+		vrx_pos = readadc(vrx_channel)
 		if vrx_pos < 300:
 			pw = max(pw-10, pw_MIN)
 		elif vrx_pos > 700:
 			pw = min(pw+10, pw_MAX)
 		pi.set_servo_pulsewidth(SERVO_PIN, pw)
-		if sw_val < 100:
-			cv2.imwrite('img.jpg', img)
-			print('img capture')
 		time.sleep(delay)
+
+# 서보모터 스위치로 이미지 캡쳐
+def img_capture(sw_val, img):
+	if sw_val < 100:
+		now = datetime.now()
+		filename = now.strftime('%Y-%m-%d %H:%M:%S') + '.jpg'
+		path = os.path.abspath(os.path.join(app.config['IMG_FOLDER'], filename))
+		cv2.imwrite(path, img)
+		print('img capture')
 
 # face detect로 서보모터 자동제어
 def servo_facedetect(nose):
@@ -71,12 +82,6 @@ def servo_facedetect(nose):
 
 servo_thread = threading.Thread(target=servo_control, args=())
 servo_thread.start()
-
-# 플라스크 웹
-app = Flask(__name__)
-app.secret_key = 'some_secret'
-app.config['IMG_FOLDER'] = os.path.abspath(os.path.join('project', 'static', 'images'))
-
 
 def gen_frames(filename=''):
 	with mp_face_detection.FaceDetection(model_selection=0, min_detection_confidence=0.5) as face_detection, \
@@ -106,12 +111,15 @@ def gen_frames(filename=''):
 				bg_img = cv2.imread(path)	
 				bg_img = cv2.resize(bg_img, (640,480))
 				img = np.where(condition, img, bg_img)
+					
+			sw_val = readadc(sw_channel)
+			img_capture(sw_val, img)
 			
 			ref, buffer = cv2.imencode('.jpg', img)   
 			img = buffer.tobytes()
 			yield (b'--frame\r\n'
 					b'Content-Type: image/jpeg\r\n\r\n' + img + b'\r\n')  
-			
+
 @app.route('/')
 def home():
 	print(app.config['IMG_FOLDER'])
