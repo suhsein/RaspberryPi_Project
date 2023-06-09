@@ -1,7 +1,13 @@
 body{
     background-color: pink;
 }
-.container{
+.container1{
+    padding-left:10px;
+    padding-bottom:5px;
+    border-bottom: 1px solid #fdfdfd;
+}
+.container2{
+    padding-top:35px;
     justify-content: center;
     text-align: center;
 }
@@ -9,25 +15,37 @@ body{
     width: 640px;
     height: 480px;
 }
-h1{
-    padding:15px;
+form{   
+    display: inline-block;
+    margin-bottom:10px;
+    padding-right: 28rem;
+}
+form>*{
+    margin: 0px 10px 0px;
+    vertical-align: middle;
 }
 label{
-    text-decoration-line: underline;
-    text-decoration-style: double;
+    border: solid 2px orange;
+    font-size: 1rem;
     cursor:pointer;
-    margin:25px;
-    background-color:khaki;
+    padding:.2rem .25rem;
+    border-radius: .25rem;
+    background-color: #fdfdfd;
+}
+label:hover{
+    box-shadow: 0 0.5em 0.5em -0.4em #f1ff85;
 }
 #chooseFile {
     display: None;
 }
-
 #submit{
-    width:50px;
-    height:25px;
-    border:0px;
-    background-color :khaki;
-    border-radius: 8px;
+    font-size: 1rem;
+    padding:.25rem .5rem;
+    border-radius: .25rem;
+    border:2px solid orange;
+    background-color: #fdfdfd;
     cursor:pointer
+}
+#submit:hover{
+    box-shadow: 0rem 0.4rem 0.5rem -0.4rem #f1ff85;
 }

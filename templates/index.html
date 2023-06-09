@@ -5,11 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>Raspberry pi</title>
  </head>
 <body>
-    <div class="container">
+    <div class="container1">
         <h1>Raspberry pi project</h1>
+        <h3>🎥Live Streaming</h3>
+    </div>
+    <div class="container2">
         <form action="{{ url_for('file_upload')}}" enctype="multipart/form-data" method="POST">
             <label for="chooseFile">choose File</label>
             <input id="chooseFile" name="chooseFile" type="file" accept=".jpeg,.jpg,.png,.JPEG,.JPG,.PNG" >
@@ -17,13 +21,12 @@
         </form>
         <div class="row">
             <div class="col-lg-8  offset-lg-2">
-                <h3 class="mt-5">🎥Live Streaming</h3> 	<!-- mt-5는 공백을 주기 위한 것 -->
-                    {% if filename %} 
-                        <p> {{ filename }}</p>
-                        <img src="{{ url_for('video_feed2',filename=filename)}}">
-                    {% else %}
-                        <img src="{{ url_for('video_feed')}}">
-                    {% endif %} 
+                <!-- 진자 템플릿 문법 -->
+                {% if filename %} 
+                    <img src="{{ url_for('video_feed2',filename=filename)}}">
+                {% else %}
+                    <img src="{{ url_for('video_feed')}}">
+                {% endif %} 
             </div>
         </div>
     </div>
