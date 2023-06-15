@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, Response
+from flask import Flask, render_template, request, Response
 import cv2
 import numpy as np
 import sys
@@ -66,7 +66,7 @@ def gen_frames(filename=''):
 			# 스위치 눌렸다면 이미지 캡쳐 함수 실행		
 			sw_val = sv.readadc(sv.sw_channel)
 			if sw_val < 100:
-				sv.img_capture(app.config['IMG_FOLDER'], sw_val, img)
+				sv.img_capture(app.config['IMG_FOLDER'], img)
 			
 			# 이미지 인코딩 / 프레임 쌓기
 			ref, buffer = cv2.imencode('.jpg', img)   
