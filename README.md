@@ -3,23 +3,35 @@
 ## 📋Table of Contents
 1. [🫲프로젝트 소개🫱](#프로젝트-소개)
 2. [⏳개발기간](#개발기간)
-3. [🤖사용부품](#사용부품)
-4. [🔎기능](#기능)
-5. [🌠TroubleShooting](#TroubleShooting)
-6. [Takeaway](#Takeaway)
+3. [📚기술스택](#기술스택)
+4. [🤖사용부품](#사용부품)
+5. [🔎기능](#기능)
+6. [🌠TroubleShooting](#TroubleShooting)
+7. [💡Takeaway](#Takeaway)
 
 *******
 
 ## 🫲프로젝트 소개🫱
 *2023-1 임베디드 시스템 과목의 라즈베리파이 프로젝트*<br/><br/>
-서보모터와 face detection을 이용한 __인물 트래킹 카메라 & 웹 포토부스__ 입니다.<br/>
-파이썬으로 구현하고 플라스크로 웹 서버를 구동했습니다.<br/>
-**시연 동영상입니다. 하단의 이미지를 클릭하면 동영상을 볼 수 있습니다. <br/>** <br/>
+__인물 트래킹 카메라 & 웹 포토부스__ 입니다.<br/>
+mediapipe의 face detection, fragmentation을 이용해 구현하였습니다.<br/>
+**하단의 이미지를 클릭하면 코드 설명 및 시연 동영상을 볼 수 있습니다. <br/>** <br/>
 [![Video Label](http://img.youtube.com/vi/m6-DWYGrjWw/0.jpg)](https://youtu.be/m6-DWYGrjWw)
 <br/><br/>
 
 ## ⏳개발기간
 2023.06.01~2023.06.15(2주)
+<br/><br/>
+
+## 📚기술스택
+<img src="https://img.shields.io/badge/RaspberryPi-A22846?style=flat&logo=RaspberryPi&logoColor=white"/> <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/>
+<img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=flat&logo=OpenCV&logoColor=white"/>
+<img src="https://img.shields.io/badge/MediaPipe-4285F4?style=flat&logo=Google&logoColor=white"/>
+<img src="https://img.shields.io/badge/Flask-000000?style=flat&logo=Flask&logoColor=white"/>
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white"/>
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white"/>
+<img src="https://img.shields.io/badge/VSCode-007ACC?style=flat&logo=VisualStudioCode&logoColor=white"/>
+<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white"/>
 <br/><br/>
 
 ## 🤖사용부품
@@ -78,7 +90,7 @@ opencv video capture 사용 시 변수로 0이 아닌 gstreamer를 사용해 주
 post 방식으로 이미지를 받아와서 동적 페이지 라우팅을 하는 부분이 가장 어려웠다.<br/><br/>
 
 
-## Takeaway
+## 💡Takeaway
 <p>라즈베리 파이 프로젝트는 임베디드 시스템 과목의 최종 프로젝트였다. 수강생 전원에게 라즈베리 파이가 배포되었고, 같은 라즈베리 파이와 부품들이 주어졌을 때 각자 다른 결과물을 만들어내는 것이 신기하고 재밌었다.
 마치 모두에게 같은 삶이 주어지지만 어떤 사람이 되느냐는 스스로에게 달려있는 것과 같이 라즈베리 파이에 숨을 불어넣는 과정이라고 생각했다.</p>
 <p>인물 트래킹 카메라는 시중에 존재하는 제품이긴 하지만 요즘 같은 디지털 미디어의 시대, 나만의 개성을 뽐내고 싶은 시대에 나만을 따라다니는 카메라, 나만을 위한 포토부스를 만들어보는 것이 프로젝트의 처음 기획 의도였다.
