@@ -15,7 +15,7 @@
 서보모터와 face detection을 이용한 __인물 트래킹 카메라 & 웹 포토부스__ 입니다.<br/>
 파이썬으로 구현하고 플라스크로 웹 서버를 구동했습니다.<br/>
 **시연 동영상입니다.<br/>**
-[![Video Label](https://github.com/suhsein/translateNtextract2023/assets/76998096/a34e1b52-e76b-401a-b90f-6eca055b8de9)](https://youtu.be/m6-DWYGrjWw)
+[![Video Label](http://img.youtube.com/vi/m6-DWYGrjWw/0.jpg)](https://youtu.be/m6-DWYGrjWw)
 
 ## ⏳개발기간
 2023.06.01~2023.06.15(2주)
